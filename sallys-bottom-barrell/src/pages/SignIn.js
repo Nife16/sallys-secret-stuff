@@ -7,7 +7,7 @@ function SignIn() {
             <Header />
             <div className='flex-row main-content'>
                 <div className='sign-up-box'>
-                    <h1>Sign Up to Sally's Bottom Barrell!!!</h1>
+                    <h1>Sign In to Sally's Bottom Barrell!!!</h1>
                 </div>
             </div>
         </div>

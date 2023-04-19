@@ -8,6 +8,7 @@ function Header() {
         </div>
         <div className='third-width justify-center'>
           <a className='header-link' href="/sign-up">Sign Up</a>
+          <a className='header-link' href="/">Home</a>
           <a className='header-link' href="/sign-in">Sign In</a>
         </div>
         <div className='third-width justify-right'>

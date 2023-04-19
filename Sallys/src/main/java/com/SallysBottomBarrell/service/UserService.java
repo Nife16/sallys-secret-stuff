@@ -2,10 +2,8 @@ package com.SallysBottomBarrell.service;
 
 import java.util.List;
 
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import com.SallysBottomBarrell.entity.User;
 import com.SallysBottomBarrell.repo.UserRepo;
