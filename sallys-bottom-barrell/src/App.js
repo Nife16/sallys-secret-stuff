@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Header from './reusables/Header'
 import PageWrapper from './reusables/PageWrapper'
+import Specials from './pages/Specials'
 
 function App() {
 
@@ -31,11 +32,13 @@ function App() {
   return (
     <PageWrapper 
       user={user}
+      setUser={setUser}
     >
       <Routes>
         <Route path="/" element={<Home user={user} />} />
-        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/sign-in" element={<SignIn user={user} setUser={setUser} />} />
         <Route path="/sign-up" element={<SignUp user={user} setUser={setUser} />} />
+        <Route path="/specials" element={<Specials user={user} setUser={setUser} />} />
       </Routes>
     </PageWrapper>
   )

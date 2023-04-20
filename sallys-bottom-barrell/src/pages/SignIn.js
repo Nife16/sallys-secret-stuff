@@ -1,11 +1,12 @@
 import React from 'react'
 import Header from '../reusables/Header'
+import SignUpBox from '../reusables/SignUpBox'
+import SignInBox from '../reusables/SignInBox'
 
-function SignIn() {
+function SignIn(props) {
     return (
-        <div className='sign-up-box'>
-            <h1>Sign In to Sally's Bottom Barrell!!!</h1>
-        </div>
+        <SignInBox user={props.user} setUser={props.setUser} />
+
     )
 }
 

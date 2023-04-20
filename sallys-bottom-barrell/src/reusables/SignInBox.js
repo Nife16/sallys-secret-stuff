@@ -2,7 +2,7 @@ import axios from 'axios';
 import React from 'react'
 import { useNavigate } from 'react-router';
 
-function SignUpBox(props) {
+function SignInBox(props) {
 
     const navigator = useNavigate()
 
@@ -15,7 +15,7 @@ function SignUpBox(props) {
     }
 
     const submitHandler = () => {
-        axios.post("http://localhost:8080/signUp", props.user)
+        axios.post("http://localhost:8080/user/signIn", props.user)
         .then((response) => {
             localStorage.setItem("emailCookie", response.data.email)
             props.setUser(response.data)
@@ -28,7 +28,7 @@ function SignUpBox(props) {
 
     return (
         <div className='sign-up-box flex-col'>
-            <h1 className='h1'>Sign Up to Sally's Bottom Barrell!!!</h1>
+            <h1 className='h1'>Sign In to Sally's Bottom Barrell!!!</h1>
             <div className='flex-row'>
                 <div className='form-input-container'>
                     <div>Email</div>
@@ -44,4 +44,4 @@ function SignUpBox(props) {
     )
 }
 
-export default SignUpBox
+export default SignInBox

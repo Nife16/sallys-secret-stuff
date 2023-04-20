@@ -32,6 +32,9 @@ public class Products {
     @Column(name = "quantity")
     private Integer quantity;
 
+    @Column(name= "imgUrl")
+    private String imgUrl;
+
     public Products() {
     }
 
@@ -78,7 +81,15 @@ public class Products {
     @Override
     public String toString() {
         return "Products [id=" + id + ", description=" + description + ", price=" + price + ", name=" + name
-                + ", quantity=" + quantity + "]";
+                + ", quantity=" + quantity + ", imgUrl=" + imgUrl + "]";
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
     
