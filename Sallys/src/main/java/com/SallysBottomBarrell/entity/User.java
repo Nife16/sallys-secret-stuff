@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 // Annotate Objects with Entity, lets project know its a Object from the DB
@@ -25,6 +27,11 @@ public class User {
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
+
+    @OneToOne
+    @JoinColumn(name="cart_id")
+    private Cart cart;
+
 
     public User() {}
 
@@ -55,6 +62,14 @@ public class User {
     @Override
     public String toString() {
         return "User [id=" + id + ", email=" + email + ", password=" + password + "]";
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
     
 }

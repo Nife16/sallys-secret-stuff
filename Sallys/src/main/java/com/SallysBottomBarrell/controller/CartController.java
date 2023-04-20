@@ -15,47 +15,34 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.SallysBottomBarrell.entity.Cart;
-import com.SallysBottomBarrell.entity.User;
+import com.SallysBottomBarrell.entity.Products;
 import com.SallysBottomBarrell.service.CartService;
-import com.SallysBottomBarrell.service.UserService;
 
 // Denotes that this will be a RESTFul
 @RestController
-@RequestMapping(value="/user")
+@RequestMapping(value="/cart")
 @CrossOrigin("*")
-public class UserController {
+public class CartController {
 
     // You can autowire any service you need to get the data from
-    @Autowired
-    UserService userService;
-
     @Autowired
     CartService cartService;
 
 
-    // Configures my endpoint, /signup in the end url, accepts JSON data, Produces JSON data, accessed with a post
     @RequestMapping(
-    		value = "/signUp",
+    		value = "/create",
     		consumes = MediaType.APPLICATION_JSON_VALUE,
     		produces = MediaType.APPLICATION_JSON_VALUE,
     		method = RequestMethod.POST
     )
-    // We return a ResponseEntity<Object> because the object returned may vary, could be user, could be an error
+    // We return a ResponseEntity<Object> because the object returned may vary, could be cart, could be an error
     // The RequestBody is the information sent to us to process, post and put has request body, get and delete do not
     // Request body is encrypted, always send password through a post request
-    public ResponseEntity<Object> signUp(@RequestBody User user) {
+    public ResponseEntity<Object> create(@RequestBody Cart cart) {
 
         try {
-            Cart cart = cartService.save(new Cart());
-
-            User savedUser = userService.save(user);
-
-            savedUser = userService.addCartToUser(savedUser, cart);
-
-            return new ResponseEntity<Object>(savedUser, HttpStatus.CREATED);
-        } catch(DataIntegrityViolationException e) {
-            System.out.println("Dupe email");
-            return new ResponseEntity<Object>("Dupe Email", HttpStatus.BAD_REQUEST);
+            Cart savedCart = cartService.save(cart);
+            return new ResponseEntity<Object>(savedCart, HttpStatus.CREATED);
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<Object>(e, HttpStatus.BAD_REQUEST);
@@ -67,36 +54,15 @@ public class UserController {
     }
 
     @RequestMapping(
-        value="/signIn",
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE,
-        method = RequestMethod.POST
-    )
-    public ResponseEntity<Object> signIn(@RequestBody User user) {
-
-        try {
-            User loggedInUser = userService.signIn(user);
-            return new ResponseEntity<Object>(loggedInUser, HttpStatus.OK);
-        } catch (Exception e) {
-            System.out.println(e);
-            return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Error e) {
-            System.out.println(e);
-            return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-    }
-
-    @RequestMapping(
-        value="/findUserById/{id}",
+        value="/findCartById/{id}",
         produces = MediaType.APPLICATION_JSON_VALUE,
         method = RequestMethod.GET
     )
-    public ResponseEntity<Object> findUserById(@PathVariable Integer id) {
+    public ResponseEntity<Object> findCartById(@PathVariable Integer id) {
 
         try {
-            User foundUser = userService.findById(id);
-            return new ResponseEntity<Object>(foundUser, HttpStatus.OK);
+            Cart foundCart = cartService.findById(id);
+            return new ResponseEntity<Object>(foundCart, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -115,8 +81,8 @@ public class UserController {
     public ResponseEntity<Object> findAll() {
 
         try {
-            List<User> allUsers = userService.findAll();
-            return new ResponseEntity<Object>(allUsers, HttpStatus.OK);
+            List<Cart> allCart = cartService.findAll();
+            return new ResponseEntity<Object>(allCart, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -128,16 +94,16 @@ public class UserController {
     }
 
     @RequestMapping(
-        value="/updateUser",
+        value="/updateCart",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE,
         method = RequestMethod.POST
     )
-    public ResponseEntity<Object> updateUser(@RequestBody User user) {
+    public ResponseEntity<Object> updateCart(@RequestBody Cart cart) {
 
         try {
-            User updatdUser = userService.update(user);
-            return new ResponseEntity<Object>(updatdUser, HttpStatus.OK);
+            Cart updatdCart = cartService.update(cart);
+            return new ResponseEntity<Object>(updatdCart, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -149,15 +115,37 @@ public class UserController {
     }
 
     @RequestMapping(
-        value="/deleteUser/{id}",
+        value="/deleteCart/{id}",
         method = RequestMethod.DELETE
     )
-    public ResponseEntity<Object> deleteUser(@PathVariable Integer id) {
+    public ResponseEntity<Object> deleteCart(@PathVariable Integer id) {
 
         try {
             // 
-            userService.deleteById(id);
+            cartService.deleteById(id);
             return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Error e) {
+            System.out.println(e);
+            return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @RequestMapping(
+        value="/addProductToCart/{cartId}",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        method = RequestMethod.POST
+    )
+    public ResponseEntity<Object> addProductToCart(@RequestBody Products product, @PathVariable Integer cartId) {
+
+        try {
+            Cart cart = cartService.addProductToCart(cartId, product);
+
+            return new ResponseEntity<Object>(cart, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
