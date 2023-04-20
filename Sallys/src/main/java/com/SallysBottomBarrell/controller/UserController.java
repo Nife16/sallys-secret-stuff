@@ -107,6 +107,28 @@ public class UserController {
 
     }
 
+    
+
+    @RequestMapping(
+        value="/findUserByEmail/{email}",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        method = RequestMethod.GET
+    )
+    public ResponseEntity<Object> findUserByEmail(@PathVariable String email) {
+
+        try {
+            User foundUser = userService.findByEmail(email);
+            return new ResponseEntity<Object>(foundUser, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Error e) {
+            System.out.println(e);
+            return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
     @RequestMapping(
         value="/findAll",
         produces = MediaType.APPLICATION_JSON_VALUE,
