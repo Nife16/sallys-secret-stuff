@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.SallysBottomBarrell.entity.Cart;
+import com.SallysBottomBarrell.entity.CreditCard;
 import com.SallysBottomBarrell.entity.User;
 import com.SallysBottomBarrell.service.CartService;
+import com.SallysBottomBarrell.service.CreditCardService;
 import com.SallysBottomBarrell.service.UserService;
 
 // Denotes that this will be a RESTFul
@@ -31,6 +33,9 @@ public class UserController {
 
     @Autowired
     CartService cartService;
+
+    @Autowired
+    CreditCardService creditCardService;
 
 
     // Configures my endpoint, /signup in the end url, accepts JSON data, Produces JSON data, accessed with a post
@@ -186,6 +191,30 @@ public class UserController {
         } catch (Error e) {
             System.out.println(e);
             return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    
+
+    @RequestMapping(
+        value="/addCreditCard/{userId}",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        method = RequestMethod.POST
+    )
+    public ResponseEntity<Object> addCreditCard(@RequestBody CreditCard creditCard, @PathVariable Integer userId) {
+
+        try {
+            CreditCard savedCreditCard = creditCardService.save(creditCard);
+            User savedUser = userService.addCreditCardToUser(userId, savedCreditCard);
+            return new ResponseEntity<Object>(savedUser, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Error e) {
+            System.out.println(e);
+            return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }

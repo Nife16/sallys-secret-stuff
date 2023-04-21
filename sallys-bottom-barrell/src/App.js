@@ -8,6 +8,7 @@ import axios from 'axios'
 import Header from './reusables/Header'
 import PageWrapper from './reusables/PageWrapper'
 import Specials from './pages/Specials'
+import Cart from './pages/Cart'
 
 function App() {
 
@@ -15,8 +16,12 @@ function App() {
     email: "",
     password: ""
   })
+  const [updateUser, setUpdateUser] = useState({})
+
+
 
   useEffect(() => {
+    
     const email = localStorage.getItem("emailCookie")
 
     axios.get(`http://localhost:8080/user/findUserByEmail/${email}`)
@@ -27,7 +32,7 @@ function App() {
         console.log(e)
       })
 
-  }, [])
+  }, [updateUser])
 
   return (
     <PageWrapper 
@@ -38,7 +43,8 @@ function App() {
         <Route path="/" element={<Home user={user} />} />
         <Route path="/sign-in" element={<SignIn user={user} setUser={setUser} />} />
         <Route path="/sign-up" element={<SignUp user={user} setUser={setUser} />} />
-        <Route path="/specials" element={<Specials user={user} setUser={setUser} />} />
+        <Route path="/specials" element={<Specials user={user} setUser={setUser} setUpdateUser={setUpdateUser} />} />
+        <Route path="/cart" element={<Cart user={user} setUser={setUser} setUpdateUser={setUpdateUser} />} />
       </Routes>
     </PageWrapper>
   )

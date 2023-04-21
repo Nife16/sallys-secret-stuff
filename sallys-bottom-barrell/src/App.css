@@ -1,27 +1,9 @@
-.header {
-  height: 8%;
-  background-color: hotpink;  
-  color: navy;
-  justify-content: center;
-  align-items: center;
-}
-
 .main-content {
   height: 92%;
   justify-content: center;
   align-items: center;
 }
 
-.logo {
-  height: 100%;
-  max-width: 74px;
-}
-
 .third-width {
   width: 33%;
-}
-
-.header-link {
-  margin: auto;
-  cursor: pointer;
 }

@@ -1,5 +1,10 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
+
 import React from 'react'
 import { useNavigate } from 'react-router'
+
+import '../css/header.css'
 
 function Header(props) {
 
@@ -13,8 +18,6 @@ function Header(props) {
     navigator("/")
   }
 
-
-
   const renderHeader = () => {
 
     if (props.user.id !== undefined) {
@@ -25,6 +28,10 @@ function Header(props) {
           </div>
           <div className='third-width justify-center'>
             <a className='header-link' href="/">Home</a>
+            <a href="/cart" className='header-link'>
+              <FontAwesomeIcon icon={faCartShopping} className='cart-icon' />
+              <div className='cart-items-count'>{props.user.cart.itemsInCart.length}</div>
+            </a>
             <div className='header-link' onClick={signOut}>Sign Out</div>
           </div>
           <div className='third-width justify-right'>

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.SallysBottomBarrell.entity.Cart;
+import com.SallysBottomBarrell.entity.CreditCard;
 import com.SallysBottomBarrell.entity.User;
 import com.SallysBottomBarrell.repo.UserRepo;
 
@@ -64,13 +65,34 @@ public class UserService {
 
 	public User signIn(User user) throws Exception {
 
-		User loggedInUser = userRepo.signIn(user.getEmail(), user.getPassword());
+		User loggedInUser = userRepo.findByEmail(user.getEmail());
 		if(loggedInUser == null) {
 			throw new Exception("User was not found");
 		}
+		
 		return loggedInUser;
 
 	}
+
+	// public User signInWithHashing(User user) throws Exception {
+
+	// 	Base64 coder = new Base64();
+	// 	User loggedInUser = userRepo.findByEmail(user.getEmail());
+	// 	if(loggedInUser == null) {
+	// 		throw new Exception("User was not found");
+	// 	}
+
+	// 	String unhashedPass = coder.encodeAsString(loggedInUser.getPassword().getBytes());
+	// 	String unhashedCheckPass = coder.encodeAsString(user.getPassword().getBytes());
+
+	// 	if(unhashedCheckPass.equals(unhashedPass)) {
+			
+	// 		return loggedInUser;
+	// 	} else {
+	// 		throw new Exception("Bad password billy!!!!!");
+	// 	}
+
+	// }
 
     public void deleteById(Integer id) {
 	    userRepo.deleteById(id);
@@ -79,6 +101,14 @@ public class UserService {
 	public User addCartToUser(User user, Cart cart) {
 		
 		user.setCart(cart);
+		return userRepo.save(user);
+
+	}
+	
+	public User addCreditCardToUser(Integer userId, CreditCard creditCard) {
+		
+		User user = findById(userId);
+		user.getWallet().add(creditCard);
 		return userRepo.save(user);
 
 	}

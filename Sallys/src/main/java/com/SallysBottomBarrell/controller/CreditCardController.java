@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.SallysBottomBarrell.entity.Cart;
+import com.SallysBottomBarrell.entity.CreditCard;
 import com.SallysBottomBarrell.entity.Products;
-import com.SallysBottomBarrell.service.CartService;
+import com.SallysBottomBarrell.service.CreditCardService;
 
 // Denotes that this will be a RESTFul
 @RestController
-@RequestMapping(value="/cart")
+@RequestMapping(value="/creditCard")
 @CrossOrigin("*")
-public class CartController {
+public class CreditCardController {
 
     // You can autowire any service you need to get the data from
     @Autowired
-    CartService cartService;
+    CreditCardService creditCardService;
 
 
     @RequestMapping(
@@ -35,14 +35,14 @@ public class CartController {
     		produces = MediaType.APPLICATION_JSON_VALUE,
     		method = RequestMethod.POST
     )
-    // We return a ResponseEntity<Object> because the object returned may vary, could be cart, could be an error
+    // We return a ResponseEntity<Object> because the object returned may vary, could be creditCard, could be an error
     // The RequestBody is the information sent to us to process, post and put has request body, get and delete do not
     // Request body is encrypted, always send password through a post request
-    public ResponseEntity<Object> create(@RequestBody Cart cart) {
+    public ResponseEntity<Object> create(@RequestBody CreditCard creditCard) {
 
         try {
-            Cart savedCart = cartService.save(cart);
-            return new ResponseEntity<Object>(savedCart, HttpStatus.CREATED);
+            CreditCard savedCreditCard = creditCardService.save(creditCard);
+            return new ResponseEntity<Object>(savedCreditCard, HttpStatus.CREATED);
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<Object>(e, HttpStatus.BAD_REQUEST);
@@ -54,15 +54,15 @@ public class CartController {
     }
 
     @RequestMapping(
-        value="/findCartById/{id}",
+        value="/findCreditCardById/{id}",
         produces = MediaType.APPLICATION_JSON_VALUE,
         method = RequestMethod.GET
     )
-    public ResponseEntity<Object> findCartById(@PathVariable Integer id) {
+    public ResponseEntity<Object> findCreditCardById(@PathVariable Integer id) {
 
         try {
-            Cart foundCart = cartService.findById(id);
-            return new ResponseEntity<Object>(foundCart, HttpStatus.OK);
+            CreditCard foundCreditCard = creditCardService.findById(id);
+            return new ResponseEntity<Object>(foundCreditCard, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -81,8 +81,8 @@ public class CartController {
     public ResponseEntity<Object> findAll() {
 
         try {
-            List<Cart> allCart = cartService.findAll();
-            return new ResponseEntity<Object>(allCart, HttpStatus.OK);
+            List<CreditCard> allCreditCard = creditCardService.findAll();
+            return new ResponseEntity<Object>(allCreditCard, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -94,16 +94,16 @@ public class CartController {
     }
 
     @RequestMapping(
-        value="/updateCart",
+        value="/updateCreditCard",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE,
         method = RequestMethod.POST
     )
-    public ResponseEntity<Object> updateCart(@RequestBody Cart cart) {
+    public ResponseEntity<Object> updateCreditCard(@RequestBody CreditCard creditCard) {
 
         try {
-            Cart updatdCart = cartService.update(cart);
-            return new ResponseEntity<Object>(updatdCart, HttpStatus.OK);
+            CreditCard updatdCreditCard = creditCardService.update(creditCard);
+            return new ResponseEntity<Object>(updatdCreditCard, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -115,60 +115,15 @@ public class CartController {
     }
 
     @RequestMapping(
-        value="/deleteCart/{id}",
+        value="/deleteCreditCard/{id}",
         method = RequestMethod.DELETE
     )
-    public ResponseEntity<Object> deleteCart(@PathVariable Integer id) {
+    public ResponseEntity<Object> deleteCreditCard(@PathVariable Integer id) {
 
         try {
             // 
-            cartService.deleteById(id);
+            creditCardService.deleteById(id);
             return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            System.out.println(e);
-            return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Error e) {
-            System.out.println(e);
-            return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-    }
-
-    @RequestMapping(
-        value="/addProductToCart/{cartId}",
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE,
-        method = RequestMethod.POST
-    )
-    public ResponseEntity<Object> addProductToCart(@RequestBody Products product, @PathVariable Integer cartId) {
-
-        try {
-            Cart cart = cartService.addProductToCart(cartId, product);
-
-            return new ResponseEntity<Object>(cart, HttpStatus.OK);
-        } catch (Exception e) {
-            System.out.println(e);
-            return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Error e) {
-            System.out.println(e);
-            return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-    }
-    
-    @RequestMapping(
-        value="/removeProductToCart/{cartId}",
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE,
-        method = RequestMethod.POST
-    )
-    public ResponseEntity<Object> removeProductToCart(@RequestBody Products product, @PathVariable Integer cartId) {
-
-        try {
-            System.out.println("We here mate");
-            Cart cart = cartService.removeProductToCart(cartId, product);
-
-            return new ResponseEntity<Object>(cart, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);

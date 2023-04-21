@@ -1,11 +1,14 @@
 package com.SallysBottomBarrell.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -32,6 +35,9 @@ public class User {
     @JoinColumn(name="cart_id")
     private Cart cart;
 
+    @OneToMany
+    @JoinColumn(name="user_id")
+    private List<CreditCard> wallet;
 
     public User() {}
 
@@ -61,7 +67,8 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", email=" + email + ", password=" + password + "]";
+        return "User [id=" + id + ", email=" + email + ", password=" + password + ", cart=" + cart + ", wallet="
+                + wallet + "]";
     }
 
     public Cart getCart() {
@@ -70,6 +77,14 @@ public class User {
 
     public void setCart(Cart cart) {
         this.cart = cart;
+    }
+
+    public List<CreditCard> getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(List<CreditCard> wallet) {
+        this.wallet = wallet;
     }
     
 }

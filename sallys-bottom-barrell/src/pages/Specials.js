@@ -1,7 +1,10 @@
-import axios, { all } from 'axios'
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import '../css/specials.css'
+import ProductBox from '../reusables/ProductBox'
 
-function Specials() {
+
+function Specials(props) {
 
     const [allProducts, setAllProducts] = useState([])
 
@@ -17,19 +20,35 @@ function Specials() {
 
     }, [])
 
+    const submitHandler = (product) => {
+        axios.post(`http://localhost:8080/cart/addProductToCart/${props.user.cart.id}`, product)
+        .then((response) => {
+            props.setUpdateUser({})
+        })
+        .catch((e) => {
+            console.log(e)
+        })
+    }
 
     const renderProducts = () => {
 
         return allProducts.map((product) => {
             return (
-                <div>{product.name}</div>
+                <ProductBox 
+                    product={product}
+                    text="Add to Cart!"
+                    onClick={submitHandler}
+                />
+                
             )
         })
 
     }
 
   return (
-    renderProducts()
+    <div className='flex-row'>
+        {renderProducts()}
+    </div>
   )
 }
 

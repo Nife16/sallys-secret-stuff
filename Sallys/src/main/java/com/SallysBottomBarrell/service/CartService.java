@@ -70,5 +70,18 @@ public class CartService {
 
 	}
 
+	public Cart removeProductToCart(Integer cartId, Products product) {
+
+		Cart cart = findById(cartId);
+		for (int i = 0; i < cart.getItemsInCart().size(); i++) {
+			if(cart.getItemsInCart().get(i).getId() == product.getId()) {
+				cart.getItemsInCart().remove(i);
+				break;
+			}
+		}
+		return cartRepo.save(cart);
+
+	}
+
     
 }
